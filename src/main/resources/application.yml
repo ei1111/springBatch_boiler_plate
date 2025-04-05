@@ -23,8 +23,12 @@ spring:
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL8Dialect
+prometheus:
+  job:
+    name: spring-batch
+  pushgateway:
+    url: localhost:9091
 
-  #??? ??
 ---
 spring:
   config:

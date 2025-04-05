@@ -41,6 +41,11 @@ dependencies {
 	/*h2*/
 	testRuntimeOnly 'com.h2database:h2'
 
+	/*스프링 배치 모니터링을 위해 추가*/
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-registry-prometheus-simpleclient:1.13.4'
+	implementation 'io.prometheus:simpleclient_pushgateway:0.16.0'
+
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.batch:spring-batch-test'

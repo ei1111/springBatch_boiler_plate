@@ -8,7 +8,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
@@ -33,9 +35,11 @@ public class DbReadWriteConfig {
     @Bean
     public Job dbConnectionJob(
             JobRepository jobRepository
+            , JobExecutionListener listener
             , Step dbConnectionStep) {
         return new JobBuilder("dbConnectionJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
+                .listener(listener)
                 .start(dbConnectionStep)
                 .build();
     }
@@ -45,7 +49,8 @@ public class DbReadWriteConfig {
             , PlatformTransactionManager transactionManager
             , ItemReader<Order> orderReader
             , ItemProcessor<Order, Account> orderToProcessor
-            , ItemWriter<Account> orderWriter) {
+            , ItemWriter<Account> orderWriter
+            , StepExecutionListener stepExecutionListener) {
         return new StepBuilder("dbConnectionStep", jobRepository)
                 //어떤 데이터로 읽어 와서 어떤 데이터로 쓸것인지,chunk: 몇개의 단위로 데이터를 처리할것인지(처리할 트랜잭션 갯수)
                 //순수자바는 반복문을 통해 갯수를 세어서 갯수를 끊어줘야 했지만 배치는 알아서 chunk로 알아서 끊어줌
@@ -53,6 +58,7 @@ public class DbReadWriteConfig {
                 .reader(orderReader)
                 .processor(orderToProcessor)
                 .writer(orderWriter)
+                .listener(stepExecutionListener)
                 .build();
     }
 

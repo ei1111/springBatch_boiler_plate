@@ -23,6 +23,7 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class SampleScheduler {
     private final Job helloWorldJob;
+    private final Job dbConnectionJob;
     private final JobLauncher jobLauncher;
     //초 분 시 일 월 주
     @Scheduled(cron = "*/10 * * * * *", zone = "Asia/Seoul")
@@ -34,5 +35,16 @@ public class SampleScheduler {
                 .toJobParameters();
 
         jobLauncher.run(helloWorldJob, jobParameters);
+    }
+
+    @Scheduled(cron = "*/10 * * * * *", zone = "Asia/Seoul")
+    public void dbConnectionJobRun() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+        //넣을 파라미터
+        JobParameters jobParameters = new JobParametersBuilder()
+                //파라미터에 값을 안넣고 실행하면 동일한 잡을 실행한다고 생각하여 작동을 안함
+                .addString("date", String.valueOf(System.currentTimeMillis()))
+                .toJobParameters();
+
+        jobLauncher.run(dbConnectionJob, jobParameters);
     }
 }

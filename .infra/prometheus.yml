@@ -1,0 +1,10 @@
+global:
+  #인터벌 5초
+  scrape_interval: 5s
+  evaluation_interval: 5s
+#어떤것을 스크랩해오는것을 정한다.
+scrape_configs:
+  - job_name: 'spring-batch' #프로메테우스를 푸시할때 잡이름 사용
+    honor_labels: true
+    static_configs:
+      - targets: [ 'pushgateway:9091' ] #pushgateway를 통해 가져올것을 정함

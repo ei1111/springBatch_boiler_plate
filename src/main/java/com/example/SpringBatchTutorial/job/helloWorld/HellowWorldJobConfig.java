@@ -3,8 +3,10 @@ package com.example.SpringBatchTutorial.job.helloWorld;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
@@ -20,11 +22,14 @@ import org.springframework.transaction.PlatformTransactionManager;
 @RequiredArgsConstructor
 public class HellowWorldJobConfig {
     @Bean
-    public Job helloWorldJob(JobRepository jobRepository, Step hellowWorldStep) {
+    public Job helloWorldJob(JobRepository jobRepository
+            , JobExecutionListener listener
+            , Step hellowWorldStep) {
         //이름 설정
         return new JobBuilder("helloWorldJob", jobRepository)
                 //job 실행시 id를 구현(시퀀스 순차적 구현)
                 .incrementer(new RunIdIncrementer())
+                .listener(listener)
                 .start(hellowWorldStep)
                 .build();
     }
@@ -32,10 +37,12 @@ public class HellowWorldJobConfig {
     @Bean
     public Step hellowWorldStep(JobRepository jobRepository
             , PlatformTransactionManager platformTransactionManager
+            , StepExecutionListener stepExecutionListener
             , Tasklet helloWorldTasklet) {
         return new StepBuilder("hellowWorldStep", jobRepository)
                 //reader, processor, writer를 안사용할려면 tasklet을 사용하면 된다.
                 .tasklet(helloWorldTasklet, platformTransactionManager)
+                .listener(stepExecutionListener)
                 .build();
     }
 
