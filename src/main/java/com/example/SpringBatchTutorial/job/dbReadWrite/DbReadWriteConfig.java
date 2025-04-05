@@ -31,10 +31,10 @@ public class DbReadWriteConfig {
     private final AccountRepository accountRepository;
 
     @Bean
-    public Job dbConnection(
+    public Job dbConnectionJob(
             JobRepository jobRepository
             , Step dbConnectionStep) {
-        return new JobBuilder("dbConnection", jobRepository)
+        return new JobBuilder("dbConnectionJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .start(dbConnectionStep)
                 .build();

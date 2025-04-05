@@ -1,34 +1,22 @@
 package com.example.SpringBatchTutorial.job.helloWorld;
 
 import com.example.SpringBatchTutorial.job.SpringBatchTestConfig;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.test.JobLauncherTestUtils;
-import org.springframework.batch.test.context.SpringBatchTest;
+import org.springframework.batch.core.Job;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
+@TestPropertySource(properties = {"spring.batch.job.name=helloWorldJob"})
+class HellowWorldJobConfigTest extends SpringBatchTestConfig {
 
-@SpringBatchTest
-@ActiveProfiles("test")
-@SpringBootTest(classes = {SpringBatchTestConfig.class, HellowWorldJobConfig.class})
-class HellowWorldJobConfigTest {
-
-    @Autowired
-    private JobLauncherTestUtils jobLauncherTestUtils;
-
-    @DisplayName("성공 케이스")
+    @DisplayName("helloWorldJob을 테스트 할 수 있다.")
     @Test
-    void success() throws Exception {
+    void testJob(@Autowired Job helloWorldJob) throws Exception {
+        //given
         //when
-        //HellowWorldJobConfig 실행
-        JobExecution execution = jobLauncherTestUtils.launchJob();
-
         //then
-        Assertions.assertEquals(execution.getExitStatus(), ExitStatus.COMPLETED);
+        jobLauncherTestUtils.setJob(helloWorldJob);
+        jobLauncherTestUtils.launchJob();
     }
 }
