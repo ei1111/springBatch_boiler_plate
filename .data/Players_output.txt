@@ -1,6 +1,8 @@
-AbduKa00,Abdul-Jabbar,rb,Karim,29
-AbduRa00,Abdullah,rb,Rabih,26
-AberWa00,Abercrombie,rb,Walter,43
-AbraDa00,Abramowicz,wr,Danny,58
-AdamBo00,Adams,te,Bob,56
-AdamCh00,Adams,wr,Charlie,22
+ID,lastName,firstName,position,yearsExperience
+AbduKa00,Abdul-Jabbar,Karim,rb,29
+AbduRa00,Abdullah,Rabih,rb,26
+AberWa00,Abercrombie,Walter,rb,43
+AbraDa00,Abramowicz,Danny,wr,58
+AdamBo00,Adams,Bob,te,56
+AdamCh00,Adams,Charlie,wr,22
+---------------

@@ -85,7 +85,7 @@ public class FileDataReadWriteConfig {
     public FlatFileItemWriter<PlayerYears> fileItemWriter() {
         BeanWrapperFieldExtractor<PlayerYears> fieldExtractor = new BeanWrapperFieldExtractor<>();
         //새로운 파일 생성
-        fieldExtractor.setNames(new String[]{"ID", "lastName", "position", "firstName", "yearsExperience"});
+        fieldExtractor.setNames(new String[]{"ID", "lastName", "firstName", "position", "yearsExperience"});
         fieldExtractor.afterPropertiesSet();
         //어떤 기준으로 파일을 만들지 알려주는 것
         DelimitedLineAggregator<PlayerYears> lineAggregator = new DelimitedLineAggregator<>();
@@ -101,6 +101,9 @@ public class FileDataReadWriteConfig {
                 .resource(outputResource)
                 //구분자 콤마
                 .lineAggregator(lineAggregator)
+                .headerCallback(item -> item.write("ID,lastName,firstName,position,yearsExperience"))//header설정
+                .footerCallback(item -> item.write("---------------\n")) //footer설정
+                .append(true)
                 .build();
     }
 }
